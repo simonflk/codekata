@@ -8,14 +8,9 @@ import { describe, expect, it } from 'vitest';
 // loop, which could be expensive.
 function findOdd(input: Array<number>) {
   const odds = new Set<number>();
-  const evens = new Set<number>();
   for (const i of input) {
     if (odds.has(i)) {
       odds.delete(i);
-      evens.add(i);
-    } else if (evens.has(i)) {
-      evens.delete(i);
-      odds.add(i);
     } else {
       odds.add(i);
     }
