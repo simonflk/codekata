@@ -5,27 +5,71 @@ type Item = {
   price: number;
 };
 
-// This is a work in prgress. It sorts the items by price per kg, then adds them
-// to the result until it can't fit any more into the bag.
-// If it's able to completely fill the bag, it will return the best possible
-// result. Right now it can't necessarily return the best possible result if there
-// is space left in the bag.
+type SearchResult = { items: Array<Item>; weight: number; price: number };
+
+/**
+ * A recursive function that returns the best combination of items that can be
+ * carried in a bag with a given capacity. The cache and recursive functions
+ * are scoped to the greedyThief function, so they are not accessible outside
+ * of the function, and can be garbage collected appropriately and be recreated
+ * each time the function is called.
+ */
 function greedyThief(items: Array<Item>, maxWeight: number) {
-  const pricePerKg = (item: Item) => item.price / item.weight;
-  const sorted = Array.from(items).sort(
-    (a, b) => pricePerKg(b) - pricePerKg(a),
-  );
+  // A scoped cache array that is used to store the results of previous
+  // recursive calls. The cache is indexed by the current index and
+  // capacity, and stores the result of the recursive call.
+  const cache: Array<SearchResult[]> = [];
 
-
-  let weight = 0;
-  let result: Array<Item> = [];
-  for (const item of sorted) {
-    if (weight + item.weight <= maxWeight) {
-      weight += item.weight;
-      result.push(item);
+  // The chooseItems function first checks if the result for the
+  // current index and capacity is already cached in the cache array.
+  // If it is, the cached result is returned.
+  //
+  // If the result is not cached, the function calculates the optimal
+  // combination of items to pack by recursively calling itself twice:
+  // once assuming the current item is not included in the knapsack,
+  // and once assuming it is included in the knapsack. The function
+  // then chooses the option that results in the highest total price,
+  // given the weight capacity of the knapsack.
+  function chooseItems(
+    items: Array<Item>,
+    capacity: number,
+    currentIndex = 0,
+  ): SearchResult {
+    const cached = cache[currentIndex]?.[capacity];
+    if (cached !== undefined) {
+      return cached;
     }
+    const currentItem = items[currentIndex];
+
+    if (currentItem === undefined || currentIndex >= items.length) {
+      return { items: [], weight: 0, price: 0 };
+    }
+
+    // the result assuming we don't add the currentItem
+    let result = chooseItems(items, capacity, currentIndex + 1);
+
+    // Evaluate adding the current item if there is enough capacity
+    if (currentItem.weight <= capacity) {
+      const withThisItem = chooseItems(
+        items,
+        capacity - currentItem.weight,
+        currentIndex + 1,
+      );
+      if (currentItem.price + withThisItem.price > result.price) {
+        result = {
+          items: [currentItem, ...withThisItem.items],
+          weight: currentItem.weight + withThisItem.weight,
+          price: currentItem.price + withThisItem.price,
+        };
+      }
+    }
+    cache[currentIndex] = cache[currentIndex] ?? [];
+    cache[currentIndex]![capacity] = result;
+    return result;
   }
-  return result;
+
+  const result = chooseItems(items, maxWeight);
+  return result.items;
 }
 
 describe('Greedy thief', function () {
@@ -106,7 +150,7 @@ describe('Greedy thief', function () {
     check(items, 8, []);
   });
 
-  it.skip('fails', () => {
+  it('is complicated', () => {
     const items = [
       { weight: 19, price: 66 },
       { weight: 12, price: 41 },
