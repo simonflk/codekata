@@ -16,6 +16,7 @@ function greedyThief(items: Array<Item>, maxWeight: number) {
     (a, b) => pricePerKg(b) - pricePerKg(a),
   );
 
+
   let weight = 0;
   let result: Array<Item> = [];
   for (const item of sorted) {
