@@ -1,12 +1,32 @@
 import { describe, expect, it } from 'vitest';
 
+const findOdd = findOddWithUnbalancedPair;
+
+// Strip out pairs of numbers, leaving only the odd number
+// Works as long as we're only talking about numbers
+function findOddWithStringReplace(input: Array<number>) {
+  const haystack = structuredClone(input).sort().join(',');
+  return parseInt(haystack.replaceAll(/([^,]+),\1(,|$)/g, ''), 10);
+}
+
+function findOddWithUnbalancedPair(input: Array<number>) {
+  const haystack = structuredClone(input).sort();
+  // loop through haystack, 2 at a time
+  for (let i = 0; i < haystack.length; i += 2) {
+    // If the first item is different to the 2nd, the first item is the odd one
+    if (haystack[i] !== haystack[i + 1]) {
+      return haystack[i];
+    }
+  }
+}
+
 // One solution to this might be to build up a map of numbers to counts, then
 // find the number with an odd count. This would require a subsequent loop to
 // find the odd count. I wanted to see if I could do it in one loop.
 // I am curious to test the performance of this solution against the other
 // solutions - Although this has only one loop, it does up to 2 set mutations in each
 // loop, which could be expensive.
-function findOdd(input: Array<number>) {
+function findOddWithSet(input: Array<number>) {
   const odds = new Set<number>();
   for (const i of input) {
     if (odds.has(i)) {
@@ -17,7 +37,6 @@ function findOdd(input: Array<number>) {
   }
   return Array.from(odds)[0];
 }
-
 
 describe('Find the odd int', () => {
   function doTest(numbers: Array<number>, expected: number) {
