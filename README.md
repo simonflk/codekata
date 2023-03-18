@@ -20,7 +20,7 @@
 
 Each Week's challenges are organized in folders named for the date of the meetup.
 
-Work on your solutions in a file named `${name}.test.{ts,js}` in the challenge folder
+Before working on the challenges, run the prepare script by executing `npm run prepare`. This script will prompt you to choose a week, a challenge, and enter your name. It will then create a test file named `${name}.test.{ts,js}` in the challenge folder with the `RUN_TESTS` constant set to `true`.
 
 ## Running tests
 
@@ -30,3 +30,4 @@ Work on your solutions in a file named `${name}.test.{ts,js}` in the challenge f
 
 `npm test 2023-03-08/ends-with` - runs all tests for a specific challenge
 
+`npm test 2023-03-08/ends-with/johndoe` - runs tests for a specific challenge and user
