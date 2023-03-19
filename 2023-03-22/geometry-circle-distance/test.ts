@@ -28,16 +28,22 @@ export function makeTest(
   describe('Example tests', function () {
     var a, b;
 
-    a = circle(point(10, 60), 11);
-    b = circle(point(40, 20), 7);
-    assert.equal(distanceBetweenCircles(a, b), 32);
+    it('should work for the example tests', function () {
+      a = circle(point(10, 60), 11);
+      b = circle(point(40, 20), 7);
+      assert.equal(distanceBetweenCircles(a, b), 32);
+    });
 
-    a = circle(point(10, 60), 40);
-    b = circle(point(40, 20), 40);
-    assert.equal(distanceBetweenCircles(a, b), 0);
+    it('should return 0 if the circles overlap', function () {
+      a = circle(point(10, 60), 40);
+      b = circle(point(40, 20), 40);
+      assert.equal(distanceBetweenCircles(a, b), 0);
+    });
 
-    a = circle(point(100, 100), 50);
-    b = circle(point(102, 110), 10);
-    assert.equal(distanceBetweenCircles(a, b), 0);
+    it('should return 0 if a circle is completely inside another circle', function () {
+      a = circle(point(100, 100), 50);
+      b = circle(point(102, 110), 10);
+      assert.equal(distanceBetweenCircles(a, b), 0);
+    });
   });
 }
