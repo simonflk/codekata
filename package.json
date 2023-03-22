@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx vitest"
+    "test": "npx vitest",
+    "prepare": "node ./prepare.js"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +18,8 @@
   },
   "volta": {
     "node": "18.14.2"
+  },
+  "dependencies": {
+    "@clack/prompts": "0.6.3"
   }
 }
