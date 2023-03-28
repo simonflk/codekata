@@ -22,6 +22,12 @@ Each Week's challenges are organized in folders named for the date of the meetup
 
 Before working on the challenges, run the prepare script by executing `npm run prepare`. This script will prompt you to choose a week, a challenge, and enter your name. It will then create a test file named `${name}.test.{ts,js}` in the challenge folder with the `RUN_TESTS` constant set to `true`.
 
+```bash
+npm run prepare
+```
+
+![](./docs/codekata-npm-prepare.gif)
+
 ## Running tests
 
 `npm test` -- runs all tests
