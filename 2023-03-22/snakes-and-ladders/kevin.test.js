@@ -18,6 +18,7 @@ function snakesAndLadders(board, dice) {
   //loop through the dice rolls
   for (let i = 0; i <= dice.length - 1; i++) {
     if (boardIndex + dice[i] >= board.length) {
+      
     } else {
       boardIndex = boardIndex + dice[i];
     }
