@@ -39,7 +39,7 @@ function orderWeight(strng) {
     });
   });
 
-  //filter out weightedWeights === 1000, this should indicate a weightString that has non-number characters
+  //filter in weightedWeights < 1000, this should exclude a weightString that has non-number characters
   let onlyRealWeights = trackingArray.filter(
     (weightEntry) => weightEntry.weightedWeight < 1000,
   );
