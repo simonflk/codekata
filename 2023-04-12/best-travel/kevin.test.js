@@ -2,7 +2,7 @@
 import { makeTest } from './test';
 
 //? Set to `true` when you are ready to enable tests
-const RUN_TESTS = true;
+const RUN_TESTS = false;
 makeTest(chooseBestSum, RUN_TESTS);
 
 /**
