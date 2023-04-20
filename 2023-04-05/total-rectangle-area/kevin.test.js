@@ -13,24 +13,24 @@ makeTest(calculate, RUN_TESTS);
 
 function calculate(recs) {
   let rectPointsArrays = [];
-
+  console.log(recs);
   recs.forEach((rec) => {
     const deltaX = Math.abs(rec[2] - rec[0]);
     const deltaY = Math.abs(rec[3] - rec[1]);
-    console.log(deltaX, deltaY);
+  
     const thesePoints = [];
 
-   
-    if (deltaX === 1) {
+    if (deltaY === 1 && deltaX === 1) {
+      thesePoints.push([rec[0], rec[1]]);
+    } else if (deltaX === 1) {
       for (let j = 0; j <= deltaY - 1; j++) {
         thesePoints.push([rec[0], rec[1] + j]);
       }
-     } else if (deltaY === 1){
-         for (let i = 0; j <= deltaX - 1; i++) {
-        thesePoints.push([rec[0] + i, rec[1]]);}
-      } else if (deltaY === 1 &&  deltaX === 1){
-       thesePoints.push([rec[0], rec[1]]);
-     } else {
+    } else if (deltaY === 1) {
+      for (let i = 0; i <= deltaX - 1; i++) {
+        thesePoints.push([rec[0] + i, rec[1]]);
+      }
+    } else {
       for (let i = 0; i <= deltaX - 1; i++) {
         for (let j = 0; j <= deltaY - 1; j++) {
           thesePoints.push([rec[0] + i, rec[1] + j]);
@@ -39,23 +39,38 @@ function calculate(recs) {
     }
     rectPointsArrays.push(thesePoints);
   });
-  if (rectPointsArrays.length < 3){
-console.log(recs, rectPointsArrays.flat(1).filter(onlyUnique),rectPointsArrays.flat(1).filter(onlyUnique).length, 'rectanhle pts')
+  if (rectPointsArrays.length < 3) {
+    //console.log(recs, rectPointsArrays.flat(1).filter(onlyUnique),rectPointsArrays.flat(1).filter(onlyUnique).length, 'rectanhle pts')
   }
-//   const uniqRectPointsArray = rectPointsArrays.map((pointsArray, idx) => {
-//     let uniqePoints = pointsArray;
-//     for (let i = idx + 1; i <= rectPointsArrays.length - 1; i++) {
-//       uniqePoints = arrayUnique(pointsArray.concat(rectPointsArrays[i]));
-//       return uniqePoints;
-//     }
-//   });
-// console.log('uniq', uniqRectPointsArray)
-//   let totalArea = 0;
-//   for (let uniqRectPoints of uniqRectPointsArray) {
-//     totalArea += uniqRectPoints.length;
-//   }
+  //   const uniqRectPointsArray = rectPointsArrays.map((pointsArray, idx) => {
+  //     let uniqePoints = pointsArray;
+  //     for (let i = idx + 1; i <= rectPointsArrays.length - 1; i++) {
+  //       uniqePoints = arrayUnique(pointsArray.concat(rectPointsArrays[i]));
+  //       return uniqePoints;
+  //     }
+  //   });
+  // console.log('uniq', uniqRectPointsArray)
+  //   let totalArea = 0;
+  //   for (let uniqRectPoints of uniqRectPointsArray) {
+  //     totalArea += uniqRectPoints.length;
+  //   }
 
-  return rectPointsArrays.flat(1).filter(onlyUnique).length;
+  let holder = [];
+  let isPresent = (element) => element;
+  let sortaUniqe = rectPointsArrays.flat(1).filter(onlyUnique);
+  for (let i = 0; i <= sortaUniqe.length - 1; i++) {
+
+    if (holder.findIndex((elem)=> elem === sortaUniqe[i]) === -1) {
+      holder.push(sortaUniqe[i]);
+    }
+  }
+
+  if (holder.length > 5){
+    console.log(holder.length, 'holder');
+  }
+
+
+  return holder.length;
 
   // thoughts:
   //on each loop set the potential increase in total area to a variable
@@ -67,4 +82,3 @@ console.log(recs, rectPointsArrays.flat(1).filter(onlyUnique),rectPointsArrays.f
 function onlyUnique(value, index, array) {
   return array.indexOf(value) === index;
 }
-
