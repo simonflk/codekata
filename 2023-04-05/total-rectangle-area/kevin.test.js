@@ -44,8 +44,7 @@ function calculate(recs) {
     .map((ar) => JSON.stringify(ar))
     .filter((itm, idx, arr) => arr.indexOf(itm) === idx)
     .map((str) => JSON.parse(str));
-
-  console.log('uniqu', rectPointsArrays.length, unique.length);
+  
 
   return unique.length;
 }
