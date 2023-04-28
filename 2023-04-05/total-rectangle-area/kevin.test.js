@@ -12,73 +12,40 @@ makeTest(calculate, RUN_TESTS);
  */
 
 function calculate(recs) {
-  let rectPointsArrays = [];
-  console.log(recs);
-  recs.forEach((rec) => {
-    const deltaX = Math.abs(rec[2] - rec[0]);
-    const deltaY = Math.abs(rec[3] - rec[1]);
-  
-    const thesePoints = [];
+  //short circuit no rectangles
+  if (recs.length === 0) {
+    return 0;
+  }
 
-    if (deltaY === 1 && deltaX === 1) {
-      thesePoints.push([rec[0], rec[1]]);
-    } else if (deltaX === 1) {
-      for (let j = 0; j <= deltaY - 1; j++) {
-        thesePoints.push([rec[0], rec[1] + j]);
-      }
-    } else if (deltaY === 1) {
-      for (let i = 0; i <= deltaX - 1; i++) {
-        thesePoints.push([rec[0] + i, rec[1]]);
-      }
+  let rectPointsArrays = [];
+
+  recs.forEach((rec) => {
+    const startingPoint = [rec[0], rec[1]];
+    const endPoint = [rec[2] - 1, rec[3] - 1];
+
+    const deltaX = endPoint[0] - startingPoint[0];
+    const deltaY = endPoint[1] - startingPoint[1];
+
+    console.log(deltaX, deltaY);
+
+    if (deltaX === 0 && deltaY === 0) {
+      rectPointsArrays.push(startingPoint);
     } else {
-      for (let i = 0; i <= deltaX - 1; i++) {
-        for (let j = 0; j <= deltaY - 1; j++) {
-          thesePoints.push([rec[0] + i, rec[1] + j]);
+      for (let i = 0; i <= deltaX; i++) {
+        for (let j = 0; j <= deltaY; j++) {
+          rectPointsArrays.push([startingPoint[0] + i, startingPoint[1] + j]);
         }
       }
     }
-    rectPointsArrays.push(thesePoints);
   });
-  if (rectPointsArrays.length < 3) {
-    //console.log(recs, rectPointsArrays.flat(1).filter(onlyUnique),rectPointsArrays.flat(1).filter(onlyUnique).length, 'rectanhle pts')
-  }
-  //   const uniqRectPointsArray = rectPointsArrays.map((pointsArray, idx) => {
-  //     let uniqePoints = pointsArray;
-  //     for (let i = idx + 1; i <= rectPointsArrays.length - 1; i++) {
-  //       uniqePoints = arrayUnique(pointsArray.concat(rectPointsArrays[i]));
-  //       return uniqePoints;
-  //     }
-  //   });
-  // console.log('uniq', uniqRectPointsArray)
-  //   let totalArea = 0;
-  //   for (let uniqRectPoints of uniqRectPointsArray) {
-  //     totalArea += uniqRectPoints.length;
-  //   }
 
-  let holder = [];
-  let isPresent = (element) => element;
-  let sortaUniqe = rectPointsArrays.flat(1).filter(onlyUnique);
-  for (let i = 0; i <= sortaUniqe.length - 1; i++) {
+  //i did steal this snippet for filtering uniques out of array or arrays
+  var unique = rectPointsArrays
+    .map((ar) => JSON.stringify(ar))
+    .filter((itm, idx, arr) => arr.indexOf(itm) === idx)
+    .map((str) => JSON.parse(str));
 
-    if (holder.findIndex((elem)=> elem === sortaUniqe[i]) === -1) {
-      holder.push(sortaUniqe[i]);
-    }
-  }
+  console.log('uniqu', rectPointsArrays.length, unique.length);
 
-  if (holder.length > 5){
-    console.log(holder.length, 'holder');
-  }
-
-
-  return holder.length;
-
-  // thoughts:
-  //on each loop set the potential increase in total area to a variable
-  //check this set of points against all other rectangles points and subtract segments that are in union
-  //with other rectangles until there is some amount of area left or none.  the intersections might become
-  //extremely complicated tho.
-  //Then add this final, non intersected area to the total area, then return the area
-}
-function onlyUnique(value, index, array) {
-  return array.indexOf(value) === index;
+  return unique.length;
 }
