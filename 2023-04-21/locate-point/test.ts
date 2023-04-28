@@ -2,7 +2,7 @@ import { describe, it, assert } from 'vitest';
 
 type Vector = [[number, number], [number, number]];
 export function makeTest(
-  pointVsVector: (input: number[], vector: Vector) => number,
+  pointVsVector: (input: [number, number], vector: Vector) => number,
   enabled = true,
 ) {
   if (!enabled) {
