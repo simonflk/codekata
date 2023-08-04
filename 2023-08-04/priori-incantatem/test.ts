@@ -2,7 +2,7 @@ import { describe, it, assert, expect } from 'vitest';
 
 type Spells = Record<string, () => unknown>;
 interface IWandConstructor {
-  new (options?: Spells): { prioriIncantatem: () => string[] } & Spells;
+  new (options?: Spells): any;
 }
 
 export function makeTest(Wand: IWandConstructor, enabled = true) {
@@ -38,7 +38,7 @@ export function makeTest(Wand: IWandConstructor, enabled = true) {
       w.expelliarmus;
       w.avadaKedavra?.();
 
-      assert.equal(w.prioriIncantatem(), ['avadaKedavra', 'alohomora']);
+      assert.deepEqual(w.prioriIncantatem(), ['avadaKedavra', 'alohomora']);
     });
   });
 }
